@@ -42,6 +42,11 @@ Route::group(['middleware'=>'api','prefix'=>'auth'], function(){
     route::delete('/tasks/delete/{id}', [TaskController::class, 'destroy']);
 
 
+    // task fitler by category ways 
+    route::get('/category/task/{category_id}', [TaskController::class, 'category_task']);
+
+
+
 
 
     /**
