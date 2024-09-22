@@ -228,4 +228,30 @@ class TaskController extends Controller
 
         }
     }
+
+    // filter by category in task
+
+    public function category_task($category_id){
+
+            try {
+
+                $tasks = Task::get_task_by_category($category_id);
+
+                return response()->json([
+                    'success' => true,
+                    'task' => $tasks
+                ], 201);
+
+
+            } catch (Exception $e) {
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'An error occurred while processing your request',
+                    'error'   => $e->getMessage()
+                ], 500);
+
+            }
+
+    }
 }

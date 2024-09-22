@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\backend\AuthController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -34,6 +35,11 @@ Route::group(['middleware'=>'api','prefix'=>'auth'], function(){
     route::get('/profile/show', [AuthController::class, 'show']);
     route::post('/profile-update', [AuthController::class, 'profile_update']);
     route::post('/password-update', [AuthController::class, 'password_update']);
+
+
+
+    // task fitler by category ways 
+    route::get('/category/task/{category_id}', [TaskController::class, 'category_task']);
 
 
 
