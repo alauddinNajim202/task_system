@@ -47,10 +47,10 @@ Route::group(['middleware'=>'api','prefix'=>'auth'], function(){
 
     // task details route
     route::get('/task-details/{id}', [TaskAssignController::class, 'tast_details']);
-    route::post('/tasks/store', [TaskController::class, 'store']);
-    route::get('/tasks/show/{id}', [TaskController::class, 'show']);
-    route::put('/tasks/update/{id}', [TaskController::class, 'update']);
-    route::delete('/tasks/delete/{id}', [TaskController::class, 'destroy']);
+    // route::post('/tasks/store', [TaskController::class, 'store']);
+    // route::get('/tasks/show/{id}', [TaskController::class, 'show']);
+    // route::put('/tasks/update/{id}', [TaskController::class, 'update']);
+    // route::delete('/tasks/delete/{id}', [TaskController::class, 'destroy']);
 
 
     /**
