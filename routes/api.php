@@ -3,7 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\api\backend\CategoryController;
 use App\Http\Controllers\Api\backend\TaskController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -42,7 +44,10 @@ Route::group(['middleware'=>'api','prefix'=>'auth'], function(){
 
 
 
-
+    /**
+     * Category  Routes
+     */
+    Route::resource('categories',CategoryController::class);
 
 
 });
