@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+
 
 class CategoryController extends Controller
 {
@@ -48,9 +50,13 @@ class CategoryController extends Controller
             ], 400);
         }
 
+        $user_id = Auth::user()->id;
+
+
         //store  category data in  database
         $category = Category::create([
             'name' => $request->name,
+            'user_id' => $user_id,
         ]);
         //return success message
         return response()->json([
@@ -92,8 +98,11 @@ class CategoryController extends Controller
             // Find the category by ID
             $category = Category::findOrFail($id);
 
+            $user_id = Auth::user()->id;
+
             $category->update([
                 'name' => $request->name,
+                'user_id' => $user_id,
             ]);
     
             // Return category data

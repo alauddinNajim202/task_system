@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\api\backend\CategoryController;
 use App\Http\Controllers\Api\backend\TaskController;
+use App\Http\Controllers\Api\backend\TaskAssignController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,13 +41,16 @@ Route::group(['middleware'=>'api','prefix'=>'auth'], function(){
     route::get('/tasks/show/{id}', [TaskController::class, 'show']);
     route::put('/tasks/update/{id}', [TaskController::class, 'update']);
     route::delete('/tasks/delete/{id}', [TaskController::class, 'destroy']);
-
-
     // task fitler by category ways 
     route::get('/category/task/{category_id}', [TaskController::class, 'category_task']);
 
 
-
+    // task details route
+    route::get('/task-details/{id}', [TaskAssignController::class, 'tast_details']);
+    route::post('/tasks/store', [TaskController::class, 'store']);
+    route::get('/tasks/show/{id}', [TaskController::class, 'show']);
+    route::put('/tasks/update/{id}', [TaskController::class, 'update']);
+    route::delete('/tasks/delete/{id}', [TaskController::class, 'destroy']);
 
 
     /**

@@ -42,6 +42,14 @@ class Task extends Model
         return self::find($id);
     }
 
+
+
+
+    // relation ship with users table
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
     
 
 

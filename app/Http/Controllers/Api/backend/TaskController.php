@@ -57,7 +57,6 @@ class TaskController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'user_id' => 'required',
             'category_id' =>'required',
             'assignee_to' =>'required',
             
@@ -76,9 +75,11 @@ class TaskController extends Controller
 
         try {
 
+            $user_id = Auth::users()->id;
+
             $task = Task::create([
                 'name' => $request->name,
-                'user_id' => $request->user_id,
+                'user_id' => $user_id,
                 'category_id' => $request->category_id,
                 'assignee_to' => $request->assignee_to,
                 'description' => $request->description,
@@ -146,7 +147,6 @@ class TaskController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'user_id' => 'required',
             'category_id' =>'required',
             'assignee_to' =>'required',
             
@@ -171,10 +171,11 @@ class TaskController extends Controller
             if(is_null($task)){
                 return response()->json(['message' => 'Task not found'], 404);
             }
+            $user_id = Auth::users()->id;
 
             $task->update([
                 'name' => $request->name,
-                'user_id' => $request->user_id,
+                'user_id' => $user_id,
                 'category_id' => $request->category_id,
                 'assignee_to' => $request->assignee_to,
                 'description' => $request->description,
