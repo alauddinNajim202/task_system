@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\api\backend\CategoryController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -36,7 +38,10 @@ Route::group(['middleware'=>'api','prefix'=>'auth'], function(){
     route::post('/password-update', [AuthController::class, 'password_update']);
 
 
-
+    /**
+     * Category  Routes
+     */
+    Route::resource('categories',CategoryController::class);
 
 
 });
