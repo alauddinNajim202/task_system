@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\TaskAssign;
+use App\Models\Task;
 class TaskAssignController extends Controller
 {
     /**
@@ -14,14 +14,16 @@ class TaskAssignController extends Controller
     {
         try {
 
-            $task = TaskAssign::get_task($id);
+            $task = Task::find($id);
+
+            $assigned_friend =   $task->user ? $task-user->name : "Not Assigned friend";
 
             return response()->json([
                 'success' => true,
                 'message' => "Task details show",
                 'name' => $task->name,
                 'description' => $task->description,
-                'Assigned friends' => $task->assignee_to,
+                'Assigned friends' => $assigned_friend,
                 'status' => $task->status == 0 ? "InProgress" : 'Done',
                 'End Date' => $task->due_date
             ], 201);

@@ -13,7 +13,7 @@ class UserFriendship extends Model
     protected $fillable = [
         'sender_id',
         'receiver_id',
-        'status',
+        'is_accecpt',
         'action_date',
     ];
     

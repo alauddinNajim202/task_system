@@ -59,6 +59,7 @@ class TaskController extends Controller
             'name' => 'required|string|max:255',
             'category_id' =>'required',
             'assignee_to' =>'required',
+            'created_by' =>'required',
             
             'description' =>'required',
             'status' =>'required',
@@ -75,11 +76,11 @@ class TaskController extends Controller
 
         try {
 
-            $user_id = Auth::users()->id;
+            // $created_by = Auth::user()->id;
 
             $task = Task::create([
                 'name' => $request->name,
-                'user_id' => $user_id,
+                'created_by' => $request->created_by,
                 'category_id' => $request->category_id,
                 'assignee_to' => $request->assignee_to,
                 'description' => $request->description,
@@ -149,6 +150,7 @@ class TaskController extends Controller
             'name' => 'required',
             'category_id' =>'required',
             'assignee_to' =>'required',
+            'created_by' =>'required',
             
             'description' =>'required',
             'status' =>'required',
@@ -171,11 +173,11 @@ class TaskController extends Controller
             if(is_null($task)){
                 return response()->json(['message' => 'Task not found'], 404);
             }
-            $user_id = Auth::users()->id;
+            // $created_by = Auth::user()->id;
 
             $task->update([
                 'name' => $request->name,
-                'user_id' => $user_id,
+                'created_by' => $request->created_by,
                 'category_id' => $request->category_id,
                 'assignee_to' => $request->assignee_to,
                 'description' => $request->description,

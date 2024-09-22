@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\api\backend\CategoryController;
 use App\Http\Controllers\Api\backend\TaskController;
+use App\Http\Controllers\Api\backend\UserFriendshipController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,8 +62,8 @@ Route::group(['middleware'=>'api','prefix'=>'auth'], function(){
      * User Friendship
      */
     Route::get('/friendships', [UserFriendshipController::class, 'index']);
-    Route::post('/friendships/request', [UserFriendshipController::class, 'sendRequest']);
-    Route::post('/friendships/accept/{id}', [UserFriendshipController::class, 'acceptRequest']);
+    Route::post('/friendships/request/{receiver_id}', [UserFriendshipController::class, 'send_request']);
+    Route::post('/friendships/accept/{id}', [UserFriendshipController::class, 'accept_request']);
     Route::post('/friendships/reject/{id}', [UserFriendshipController::class, 'rejectRequest']);
     Route::delete('/friendships/unfriend/{id}', [UserFriendshipController::class, 'unfriend']);
 
