@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\api\backend\CategoryController;
+use App\Http\Controllers\Api\backend\TaskController;
 
 /*
 |--------------------------------------------------------------------------
