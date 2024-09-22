@@ -31,6 +31,12 @@ class Task extends Model
 
     }
 
+    static function get_task_by_category($category_id){
+
+        return Task::where('category_id', $category_id)->get();
+        
+    }
+
     // get single taks
     static function get_single_task($id){
         return self::find($id);
