@@ -14,7 +14,9 @@ class Task extends Model
 
 
     static function get_task_by_category($category_id){
+
         return Task::where('category_id', $category_id)->get();
+        
     }
 
 }

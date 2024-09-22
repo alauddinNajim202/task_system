@@ -247,7 +247,7 @@ class TaskController extends Controller
 
                 return response()->json([
                     'success' => false,
-                    'message' => 'An error occurred while processing your request',
+                    'message' => 'Error occurred while processing your request',
                     'error'   => $e->getMessage()
                 ], 500);
 
