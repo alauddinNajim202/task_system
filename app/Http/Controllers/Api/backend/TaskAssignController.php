@@ -123,24 +123,6 @@ class TaskAssignController extends Controller
             } else {
                 // user level increment
 
-                // if ($total_points  > 100 &&  $total_points <= 200) {
-                //     $task_assign = $user->user_level()->update([
-                //         'level' => 2, // initialy user level
-                //     ]);
-                // } elseif ($total_points  > 200 &&  $total_points <= 300) {
-                //     $task_assign = $user->user_level()->update([
-                //         'level' => 3, // initialy user level
-                //     ]);
-                // } elseif ($total_points  > 300 &&  $total_points <= 400) {
-                //     $task_assign = $user->user_level()->update([
-                //         'level' => 4, // initialy user level
-                //     ]);
-                // } elseif ($total_points  > 400 &&  $total_points <= 500) {
-                //     $task_assign = $user->user_level()->update([
-                //         'level' => 5, // initialy user level
-                //     ]);
-                // }
-
                 $levels = [
                     100 => 2,  // Level 2: 101-200 points
                     200 => 3,  // Level 3: 201-300 points
