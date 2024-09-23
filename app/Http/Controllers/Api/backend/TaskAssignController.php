@@ -21,7 +21,7 @@ class TaskAssignController extends Controller
     public function tast_details($id)
     {
 
-        
+
         try {
             // dd($id);
             $task = Task::with('user')->find($id);
@@ -40,20 +40,17 @@ class TaskAssignController extends Controller
                 // 'task' => $task
 
             ], 201);
-
-
-         } catch (Exception $e) {
+        } catch (\Exception $e) {
 
             return response()->json([
                 'success' => false,
                 'message' => 'An error occurred while processing your request',
                 'error'   => $e->getMessage()
             ], 500);
-
         }
     }
 
-    
+
     /**
      * Store a task details newly created resource in storage.
      */
@@ -61,11 +58,11 @@ class TaskAssignController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'user_id' => 'required',
-            'assigned_from' =>'required',
-            'assigned_by' =>'required',
-            'points' =>'required',
-            'end_date' =>'required',
-            
+            'assigned_from' => 'required',
+            'assigned_by' => 'required',
+            'points' => 'required',
+            'end_date' => 'required',
+
         ]);
 
         if ($validator->fails()) {
@@ -80,10 +77,10 @@ class TaskAssignController extends Controller
             $task = Task::get_single_task($id);
 
             // task check
-            if(is_null($task)){
+            if (is_null($task)) {
                 return response()->json(['message' => 'Task not found'], 404);
             }
-            
+
 
             // task details table update
             $task_detail = TaskDetail::create([
@@ -91,44 +88,74 @@ class TaskAssignController extends Controller
                 'task_id' => $task->id,
                 'points' => $request->points,
                 'end_date' => $request->end_date,
-                              
-                
+
+
             ]);
 
             // task assign table update
             $task_assign = TaskAssign::create([
-    
+
                 'task_id' => $task->id,
                 'assigned_from' => $request->assigned_from,
                 'assigned_by' => $request->assigned_by,
-                              
-                
+
+
             ]);
 
 
             // user total points update
-            $user = User::with('task_details','user_level')->find($request->user_id);
+            $user = User::with('task_details', 'user_level')->find($request->user_id);
 
             $total_points = $user->task_details->sum('points');
 
-            $user->total_points =+ $total_points;
+            $user->total_points = +$total_points;
             $user->save();
 
 
-            if(empty($user->user_level)){
+            if (empty($user->user_level)) {
 
                 $task_assign = $user->user_level()->create([
-    
+
                     'user_id' => $user->id,
                     'level' => 1, // initialy user level 1
-                    'assigned_by' => $request->assigned_by,   
+                    'assigned_by' => $request->assigned_by,
                 ]);
-    
-            }else{
+            } else {
                 // user level increment
-                // if 
+
+                // if ($total_points  > 100 &&  $total_points <= 200) {
+                //     $task_assign = $user->user_level()->update([
+                //         'level' => 2, // initialy user level
+                //     ]);
+                // } elseif ($total_points  > 200 &&  $total_points <= 300) {
+                //     $task_assign = $user->user_level()->update([
+                //         'level' => 3, // initialy user level
+                //     ]);
+                // } elseif ($total_points  > 300 &&  $total_points <= 400) {
+                //     $task_assign = $user->user_level()->update([
+                //         'level' => 4, // initialy user level
+                //     ]);
+                // } elseif ($total_points  > 400 &&  $total_points <= 500) {
+                //     $task_assign = $user->user_level()->update([
+                //         'level' => 5, // initialy user level
+                //     ]);
+                // }
+
+                $levels = [
+                    100 => 2,  // Level 2: 101-200 points
+                    200 => 3,  // Level 3: 201-300 points
+                    300 => 4,  // Level 4: 301-400 points
+                    400 => 5,  // Level 5: 401-500 points
+                ];
+                
+                foreach ($levels as $min_points => $level) {
+                    if ($total_points > $min_points && $total_points <= $min_points + 100) {
+                        $user->user_level()->update(['level' => $level]);
+                        break; // Exit the loop once the appropriate level is set
+                    }
+                }
             }
-            
+
 
             return response()->json([
                 'success' => true,
@@ -138,22 +165,12 @@ class TaskAssignController extends Controller
                 'user' => $user,
                 // 'total_points' => $total_points,
             ], 201);
-
-               
-           
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'An error occurred while processing your request',
                 'error'   => $e->getMessage()
             ], 500);
         }
-       
-
-
     }
-
-    
-
-    
 }
