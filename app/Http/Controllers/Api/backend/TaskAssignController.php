@@ -133,7 +133,7 @@ class TaskAssignController extends Controller
                 foreach ($levels as $min_points => $level) {
                     if ($total_points > $min_points && $total_points <= $min_points + 100) {
                         $user->user_level()->update(['level' => $level]);
-                        break; // Exit the loop once the appropriate level is set
+                        break; 
                     }
                 }
             }
