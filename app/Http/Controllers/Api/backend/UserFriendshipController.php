@@ -17,8 +17,14 @@ class UserFriendshipController extends Controller
      */
     public function index()
     {
+
+
         try {
             $userId = Auth::id();
+
+
+            return response($userId);
+
             // Get all friendships
             $friendships = UserFriendship::where('sender_id', $userId)
                         ->orWhere('receiver_id', $userId)

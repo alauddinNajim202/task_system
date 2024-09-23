@@ -16,5 +16,19 @@ class UserFriendship extends Model
         'is_accecpt',
         'action_date',
     ];
+
+
+
+    // Relationship for sender (User)
+    public function sender()
+    {
+        return $this->belongsTo(User::class, 'sender_id');
+    }
+
+    // Relationship for receiver (User)
+    public function receiver()
+    {
+        return $this->belongsTo(User::class, 'receiver_id');
+    }
     
 }
