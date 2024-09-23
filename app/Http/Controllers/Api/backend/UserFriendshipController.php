@@ -12,37 +12,39 @@ use Illuminate\Support\Carbon;
 
 class UserFriendshipController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['index', 'sendRequest','acceptRequest','rejectRequest','unfriend']]);
+    }
     /**
      * Display a list of the authenticated user's friendships.
      */
     public function index()
     {
+        $userId = Auth::id();
 
+        if (!$userId) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+        }
 
-        try {
-            $userId = Auth::id();
-
-
-            return response($userId);
+        return response($userId);
 
             // Get all friendships
             $friendships = UserFriendship::where('sender_id', $userId)
-                        ->orWhere('receiver_id', $userId)
-                        ->orWhere('receiver_id', $userId)
-                        ->orWhere('is_accecpt', $userId)
-                        ->get();
+                ->orWhere('receiver_id', $userId)
+                ->get();
 
-            //return response
-            return response()->json([
-                'success' => true,
-                'data' => $friendships,
-            ], 200);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to Get all friendships: ' . $th->getMessage(),
-            ], 500);
-        }
+        //     //return response
+        //     return response()->json([
+        //         'success' => true,
+        //         'data' => $friendships,
+        //     ], 200);
+        // } catch (\Throwable $th) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Failed to Get all friendships: ' . $th->getMessage(),
+        //     ], 500);
+        // }
     }
 
     /**
@@ -68,10 +70,9 @@ class UserFriendshipController extends Controller
         try {
             // Create a new friend request
             $friendship = UserFriendship::create([
-                'sender_id' => 2, 
-                'receiver_id' => $receiver_id,
-                'is_accecpt' => 'pending',
-                'action_date' => $now,
+                'sender_id' => Auth::id(), 
+                'receiver_id' => $request->receiver_id,
+                'status' => 'pending',
             ]);
 
             return response()->json([
@@ -159,7 +160,7 @@ class UserFriendshipController extends Controller
                 ->where('id', $id)
                 ->where('status', 'accepted')
                 ->firstOrFail();
-        
+
             $friendship->delete();
 
             return response()->json([
