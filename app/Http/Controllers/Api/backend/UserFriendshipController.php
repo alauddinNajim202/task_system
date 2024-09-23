@@ -4,9 +4,11 @@ namespace App\Http\Controllers\api\backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\UserFriendship;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Carbon;
 
 class UserFriendshipController extends Controller
 {
@@ -27,16 +29,10 @@ class UserFriendshipController extends Controller
 
         return response($userId);
 
-        // try {
-        //     $userId = Auth::id();
-
-
-        //     return response($userId);
-
-        //     // Get all friendships
-        //     $friendships = UserFriendship::where('sender_id', $userId)
-        //         ->orWhere('receiver_id', $userId)
-        //         ->get();
+            // Get all friendships
+            $friendships = UserFriendship::where('sender_id', $userId)
+                ->orWhere('receiver_id', $userId)
+                ->get();
 
         //     //return response
         //     return response()->json([
@@ -54,23 +50,27 @@ class UserFriendshipController extends Controller
     /**
      * Send a friend request.
      */
-    public function sendRequest(Request $request)
+    public function send_request($receiver_id)
     {
-        $validator = Validator::make($request->all(), [
-            'receiver_id' => 'required|exists:users,id',
-        ]);
+        // $validator = Validator::make($request->all(), [
+        //     'receiver_id' => 'required|exists:users,id',
+        // ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'error' => $validator->errors()->first(),
-            ], 400);
-        }
+        // if ($validator->fails()) {
+        //     return response()->json([
+        //         'error' => $validator->errors()->first(),
+        //         'success' => false
+        //     ], 400);
+        // }
+
+        $sender_id = Auth::user();
+        
+        $now = Carbon::now();
 
         try {
             // Create a new friend request
             $friendship = UserFriendship::create([
-                'sender_id' => Auth::id(),
+                'sender_id' => Auth::id(), 
                 'receiver_id' => $request->receiver_id,
                 'status' => 'pending',
             ]);
@@ -79,6 +79,8 @@ class UserFriendshipController extends Controller
                 'success' => true,
                 'message' => 'Friend request sent successfully!',
                 'data' => $friendship,
+                'sender_id' => $sender_id,
+                
             ], 201);
         } catch (\Throwable $th) {
             return response()->json([
@@ -91,17 +93,14 @@ class UserFriendshipController extends Controller
     /**
      * Accept a friend request.
      */
-    public function acceptRequest($id)
+    public function accept_request($id)
     {
         try {
-            $friendship = UserFriendship::where('receiver_id', Auth::id())
-                ->where('id', $id)
-                ->firstOrFail();
-
-
+            $friendship = UserFriendship::find($id);
+                
             $friendship->update([
-                'status' => 'accepted',
-                'action_date' => now(),
+                'is_accecpt' => 'accepted',
+                'action_date' => Carbon::now(),
             ]);
 
             return response()->json([

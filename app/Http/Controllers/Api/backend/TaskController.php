@@ -57,9 +57,9 @@ class TaskController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'user_id' => 'required',
             'category_id' =>'required',
             'assignee_to' =>'required',
+            'created_by' =>'required',
             
             'description' =>'required',
             'status' =>'required',
@@ -76,9 +76,11 @@ class TaskController extends Controller
 
         try {
 
+            // $created_by = Auth::user()->id;
+
             $task = Task::create([
                 'name' => $request->name,
-                'user_id' => $request->user_id,
+                'created_by' => $request->created_by,
                 'category_id' => $request->category_id,
                 'assignee_to' => $request->assignee_to,
                 'description' => $request->description,
@@ -146,9 +148,9 @@ class TaskController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'user_id' => 'required',
             'category_id' =>'required',
             'assignee_to' =>'required',
+            'created_by' =>'required',
             
             'description' =>'required',
             'status' =>'required',
@@ -171,10 +173,11 @@ class TaskController extends Controller
             if(is_null($task)){
                 return response()->json(['message' => 'Task not found'], 404);
             }
+            // $created_by = Auth::user()->id;
 
             $task->update([
                 'name' => $request->name,
-                'user_id' => $request->user_id,
+                'created_by' => $request->created_by,
                 'category_id' => $request->category_id,
                 'assignee_to' => $request->assignee_to,
                 'description' => $request->description,
@@ -227,5 +230,31 @@ class TaskController extends Controller
             ], 500);
 
         }
+    }
+
+    // filter by category in task
+
+    public function category_task($category_id){
+
+            try {
+
+                $tasks = Task::get_task_by_category($category_id);
+
+                return response()->json([
+                    'success' => true,
+                    'task' => $tasks
+                ], 201);
+
+
+            } catch (Exception $e) {
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Error occurred while processing your request',
+                    'error'   => $e->getMessage()
+                ], 500);
+
+            }
+
     }
 }

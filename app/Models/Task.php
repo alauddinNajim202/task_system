@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\User;
 
 class Task extends Model
 {
@@ -13,7 +14,7 @@ class Task extends Model
 
     protected $fillable = [
         'name',
-        'user_id',
+        'created_by',
         'category_id',
         'assignee_to',
         'description',
@@ -31,11 +32,25 @@ class Task extends Model
 
     }
 
+    static function get_task_by_category($category_id){
+
+        return Task::where('category_id', $category_id)->get();
+        
+    }
+
     // get single taks
     static function get_single_task($id){
         return self::find($id);
     }
 
+
+
+
+    // relation ship with users table
+    public function user()
+    {
+        return $this->hasMany(User::class, 'id', 'assignee_to');
+    }
     
 
 
