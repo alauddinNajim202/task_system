@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\api\backend\CategoryController;
 use App\Http\Controllers\Api\backend\TaskController;
 use App\Http\Controllers\Api\backend\UserFriendshipController;
+use App\Http\Controllers\Api\backend\TaskAssignController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +48,11 @@ Route::group(['middleware'=>'api','prefix'=>'auth'], function(){
 
     // task details route
     route::get('/task-details/{id}', [TaskAssignController::class, 'tast_details']);
+
+    route::post('/task_details_update/{id}', [TaskAssignController::class, 'tast_details_update']);
+
+
+
     // route::post('/tasks/store', [TaskController::class, 'store']);
     // route::get('/tasks/show/{id}', [TaskController::class, 'show']);
     // route::put('/tasks/update/{id}', [TaskController::class, 'update']);

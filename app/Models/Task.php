@@ -49,7 +49,7 @@ class Task extends Model
     // relation ship with users table
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasMany(User::class, 'id', 'assignee_to');
     }
     
 

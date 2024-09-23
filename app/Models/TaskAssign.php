@@ -13,13 +13,10 @@ class TaskAssign extends Model
     use softDeletes;
 
     protected $fillable = [
-        'name',
-        'user_id',
-        'category_id',
-        'assignee_to',
-        'description',
-        'status',
-        'due_date',
+        'task_id',
+        'assigned_from',
+        'assigned_by',
+       
     ];
 
    
